@@ -6,27 +6,146 @@ class AssetRouter {
     routes(app) {
         app.route('/list')
             .get(async (req, res) => {
-                const resultBytes = Connection.contract.evaluateTransaction('GetAllAssets');
+                const resultBytes = Connection.contract.evaluateTransaction('GetAllLoanRequest');
                 const resultJson = utf8Decoder.decode(await resultBytes);
                 const result = JSON.parse(resultJson);
                 res.status(200).send(result);
             });
+
         app.route('/create')
             .post((req, res) => {
                 console.log(req.body);
                 var Id = Date.now();
                 var json = JSON.stringify({
-                    ID: Id + "",
-                    Owner: req.body.Owner,
-                    Color: req.body.Color,
-                    Size: req.body.Size,
-                    AppraisedValue: req.body.AppraisedValue,
+                    RequestID: Id + "",
+                    //  :req.body.RequestID,
+                    RequesterName: req.body.RequesterName,
+                    LoanAmount: req.body.LoanAmount,
+                    InterestRate: req.body.InterestRate,
+                    NoOfYears: req.body.NoOfYears,
+                    ModeOfRepayment: req.body.ModeOfRepayment,
+                    /*                     ApprovedStatus		:req.body.ApprovedStatus,
+                                        DisbursedStatus		:req.body.DisbursedStatus,
+                                        RepaymentStatus		:req.body.RepaymentStatus,
+                                        Consent				:req.body.Consent,
+                                        RegulatoryCheck		:req.body.RegulatoryCheck, */
+                    ApprovedBy: req.body.ApprovedBy
                 });
-                Connection.contract.submitTransaction('CreateAsset', json);
+                Connection.contract.submitTransaction('CreateLoanRequest', json);
                 var response = ({ "AssetId": Id });
                 res.status(200).send(response);
             });
-        app.route('/update')
+
+        app.route('/get')
+            .get(async (req, res) => {
+                let id = req.body.RequestID;
+                console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
+                const resultBytes = Connection.contract.evaluateTransaction('ViewLoanRequest', id);
+                const resultJson = utf8Decoder.decode(await resultBytes);
+                const result = JSON.parse(resultJson);
+                console.log('*** Result:', result);
+                res.status(200).send(result);
+            });
+
+        app.route('/delete')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+                try {
+                    Connection.contract.submitTransaction('DeleteLoanRequest', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Delete success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+
+            });
+
+
+        // app.route('/mspId')
+        app.route('/get/:id')
+        .get(async (req, res) => {
+            let id = req.params.id;
+            console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
+            const resultBytes = Connection.contract.evaluateTransaction('RequestExists', id);
+            const resultJson = utf8Decoder.decode(await resultBytes);
+            const result = JSON.parse(resultJson);
+            console.log('*** Result:', result);
+            res.status(200).send(result);
+        });
+
+
+        app.route('/regchk')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+                try {
+                    Connection.contract.submitTransaction('RegulationCheck', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Update success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+            })
+
+        app.route('/approve')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+                try {
+                    Connection.contract.submitTransaction('LoanApprove', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Update success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+            })
+        app.route('/consent')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+                try {
+                    Connection.contract.submitTransaction('Consent', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Update success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+
+            })
+
+        app.route('/disburse')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+
+                try {
+                    Connection.contract.submitTransaction('LoanDusburse', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Update success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+            })
+
+            app.route('/repay')
+            .post((req, res) => {
+                console.log(req.body);
+                var response;
+
+                try {
+                    Connection.contract.submitTransaction('LoanRepay', req.body.RequestID);
+                    response = ({ "status": 0, "message": "Update success" });
+                } catch (error) {
+                    response = ({ "status": -1, "message": "Something went wrong" });
+                }
+                res.status(200).send(response);
+            })
+
+
+
+
+/*         app.route('/update')
             .post((req, res) => {
                 console.log(req.body);
                 var Id = Date.now();
@@ -46,19 +165,8 @@ class AssetRouter {
                 }
                 res.status(200).send(response);
             });
-        app.route('/delete')
-            .post((req, res) => {
-                console.log(req.body);
-                var response;
-                try {
-                    Connection.contract.submitTransaction('DeleteAsset', req.body.id);
-                    response = ({ "status": 0, "message": "Delete success" });
-                } catch (error) {
-                    response = ({ "status": -1, "message": "Something went wrong" });
-                }
-                res.status(200).send(response);
-            });
-        app.route('/transfer')
+
+       app.route('/transfer')
             .post(async (req, res) => {
                 console.log(req.body);
 
@@ -95,17 +203,8 @@ class AssetRouter {
                     console.log('*** Successfully caught the error: \n', error);
                 }
                 res.status(200).send("Success");
-            });
-        app.route('/get/:id')
-            .get(async (req, res) => {
-                let id = req.params.id;
-                console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
-                const resultBytes = Connection.contract.evaluateTransaction('ReadAsset', id);
-                const resultJson = utf8Decoder.decode(await resultBytes);
-                const result = JSON.parse(resultJson);
-                console.log('*** Result:', result);
-                res.status(200).send(result);
-            });
+            }); */
+
     }
 }
 

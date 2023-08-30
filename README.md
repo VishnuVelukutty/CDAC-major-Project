@@ -30,17 +30,14 @@ The **Decentralized Loan Management System using Hyperledger Fabric** is a block
 
 ## Setup
 1. Check Dependencies or Install them using **install.sh** file  
-```
-chmod +x install.sh  
-
-./install.sh
+```bash
+chmod +x install.sh  &&  ./install.sh
 ```
 
 2. Download fabric binaries using 
 
 ```bash 
 curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
-
 ```  
 
 > In case of error "*Cannot Download Fabric binaries*" or *Download a specific version of binary* use the following command and replace the version with required one 
@@ -55,7 +52,7 @@ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/ins
 ```bash 
 nano .bashrc
 ```
-then add the following line 
+then add the following line at the bottom
 ```bash 
 export export PATH=$PATH:/usr/local/go/bin
 ```
@@ -67,7 +64,7 @@ to update your environment
 
 4. Install Nodejs 
 ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh
 ```
 
 node and npm to run node chaincode and applications

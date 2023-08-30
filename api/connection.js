@@ -10,9 +10,12 @@ const mspId = envOrDefault('MSP_ID', 'Org1MSP');
 
 
 
-//Local development and testing uncomment below code
-const CRYPTO_PATH ="/home/vishnu-velukutty/Desktop/testcode/loan-transfer/network";
+//Local development and testing changes required
 
+const CRYPTO_PATH =envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..','..', '..', 'Major-Project', 'CDAC-major-Project', 'loan-transfer','network'));
+
+
+// "/home/vishnu-velukutty/Desktop/testcode/loan-transfer/network"
 // const keyPath = WORKSHOP_CRYPTO + "/enrollments/org1/users/org1user/msp/keystore/key.pem";
 // const certPath = WORKSHOP_CRYPTO + "/enrollments/org1/users/org1user/msp/signcerts/cert.pem"
 // const tlsCertPath = WORKSHOP_CRYPTO + "/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem";
@@ -67,10 +70,10 @@ async function initFabric() {
         Connection.contract = contract;
         console.log("Working");
     } catch (e) {
-        console.log('sample log');
+        console.log('error log');
         console.log(e.message);
     } finally {
-        console.log('error log ');
+        console.log(' Running ');
     }
 }
 

@@ -52,7 +52,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org1MSP
 
-        MSPDir: ../organizations/peerOrganizations/org1.bank.com/msp
+        MSPDir: ../organizations/peerOrganizations/ubi.bank.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -79,7 +79,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org2MSP
 
-        MSPDir: ../organizations/peerOrganizations/org2.bank.com/msp
+        MSPDir: ../organizations/peerOrganizations/icici.bank.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -105,7 +105,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org3MSP
 
-        MSPDir: ../organizations/peerOrganizations/org3.bank.com/msp
+        MSPDir: ../organizations/peerOrganizations/csb.bank.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -133,7 +133,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org4MSP
 
-        MSPDir: ../organizations/peerOrganizations/org4.bank.com/msp
+        MSPDir: ../organizations/peerOrganizations/regulatorBody.bank.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -162,7 +162,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org5MSP
 
-        MSPDir: ../organizations/peerOrganizations/org5.bank.com/msp
+        MSPDir: ../organizations/peerOrganizations/loanRequester.bank.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
