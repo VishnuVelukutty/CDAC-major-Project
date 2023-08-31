@@ -19,7 +19,7 @@ function yaml_ccp {
     local PP=$(one_line_pem $4)
     local CP=$(one_line_pem $5)
     sed -e "s/\${ORG}/$1/" \
-        -e "s/\${P0PORT}/$2/" \
+        -e "s/\${P0PORT}/$2/"\
         -e "s/\${CAPORT}/$3/" \
         -e "s#\${PEERPEM}#$PP#" \
         -e "s#\${CAPEM}#$CP#" \
