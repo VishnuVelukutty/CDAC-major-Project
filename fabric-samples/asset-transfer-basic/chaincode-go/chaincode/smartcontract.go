@@ -4,7 +4,8 @@ import (
 	"fmt"
 	
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
-	"github.com/hyperledger/fabric/msp"
+	//"github.com/hyperledger/fabric/msp"
+	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 
 )
 
@@ -221,17 +222,26 @@ func (t *TestContract) DeleteLoanRequest(ctx contractapi.TransactionContextInter
 
 
 //Fetches MSPID of the peer that calls the chaincode
-func (t *TestContract) getMSPID(ctx contractapi.TransactionContextInterface) (string,error){
-	creator,err := ctx.GetStub().GetCreator()
-	if err != nil {
-		return "", err
-	}
-	identity, err := msp.DeserializeIdentity(creator)
-	if err != nil {
-		return "", err
-	}
+// func (t *TestContract) getMSPID(ctx contractapi.TransactionContextInterface) (string,error){
+// 	creator,err := ctx.GetStub().GetCreator()
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	identity, err := msp.DeserializeIdentity(creator)
+// 	if err != nil {
+// 		return "", err
+// 	}
 
-	return identity.GetMSPID(), nil
+// 	return identity.GetMSPID(), nil
+// }
+
+func (t *TestContract) getMSPID(ctx contractapi.TransactionContextInterface) (string, error) {
+    mspID, err := cid.GetMSPID(ctx.GetStub())
+    if err != nil {
+        return "", err
+    }
+
+    return mspID, nil
 }
 
 //Sets the RegulatoryCheck field true if the loanRequest passes all regulatory checks
